@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407132703) do
+ActiveRecord::Schema.define(version: 20170414074517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -137,6 +137,15 @@ ActiveRecord::Schema.define(version: 20170407132703) do
     t.integer  "stock_location_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+  end
+
+  create_table "spree_favorites", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "product_id"], name: "index_spree_favorites_on_user_id_and_product_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_spree_favorites_on_user_id", using: :btree
   end
 
   create_table "spree_gateways", force: :cascade do |t|
@@ -400,9 +409,11 @@ ActiveRecord::Schema.define(version: 20170407132703) do
     t.boolean  "promotionable",        default: true
     t.string   "meta_title"
     t.datetime "discontinue_on"
+    t.integer  "favorite_users_count", default: 0
     t.index ["available_on"], name: "index_spree_products_on_available_on", using: :btree
     t.index ["deleted_at"], name: "index_spree_products_on_deleted_at", using: :btree
     t.index ["discontinue_on"], name: "index_spree_products_on_discontinue_on", using: :btree
+    t.index ["favorite_users_count"], name: "index_spree_products_on_favorite_users_count", using: :btree
     t.index ["name"], name: "index_spree_products_on_name", using: :btree
     t.index ["shipping_category_id"], name: "index_spree_products_on_shipping_category_id", using: :btree
     t.index ["slug"], name: "index_spree_products_on_slug", unique: true, using: :btree
